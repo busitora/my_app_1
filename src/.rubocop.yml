@@ -15,6 +15,9 @@ AllCops:
     - 'spec/**/*'
     - 'node_modules/**/*'
   DisplayCopNames: true
+  # サジェストしてくるのうるさいので消す
+  SuggestExtensions: false
+
 
 # 日本語でのコメントを許可
 Style/AsciiComments:
@@ -68,3 +71,21 @@ Metrics/BlockLength:
 # Rails 用に最適化されたモード
 Rails:
   Enabled: true
+
+# !! のイディオムは積極的に使う
+Style/DoubleNegation:
+  Enabled: false
+
+# 明示的に else で nil を返すのは分かりやすいので許可する
+Style/EmptyElse:
+  EnforcedStyle: empty
+
+# 1_000_000 と区切り文字が 2 個以上必要になる場合のみ _ 区切りを必須にする
+Style/NumericLiterals:
+  MinDigits: 7
+
+# * 式展開したい場合に書き換えるのが面倒
+# * 文章ではダブルクォートよりもシングルクォートの方が頻出する
+# ことから EnforcedStyle: double_quotes 推奨
+#Style/StringLiterals:
+#  EnforcedStyle: double_quotes

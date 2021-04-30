@@ -30,4 +30,4 @@ routes:
 
 .PHONY: lint
 lint:
-	docker-compose run --rm web bundle exec rubocop -a
+	docker-compose run --rm web bundle exec rubocop --auto-correct
