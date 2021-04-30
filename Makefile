@@ -13,6 +13,10 @@ build:
 .PHONY: install
 install:
 	docker-compose run web rails webpacker:install
+	docker-compose run web bundle install
+
+.PHONY: create
+creaate:
 	docker-compose run web rails db:create
 
 .PHONY: web_bash
