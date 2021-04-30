@@ -1,24 +1,43 @@
-# README
+# my_app_1
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+サクッと何か作りたい時のやつ。
 
-Things you may want to cover:
+- 開発環境: Docker
+- 言語: Ruby 2.7
+- フレームワーク: Rails 6
+- データベース: MySQL 5.7
 
-* Ruby version
+## セットアップ
 
-* System dependencies
+```
+$ make build
+$ make up
+$ make install
+```
 
-* Configuration
+## メモ
 
-* Database creation
+apiモードとかその他で使いたい時はcloneせず
+Dockerfileとdocker-compose.ymlをコピって使っても可
 
-* Database initialization
+```yml
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-* How to run the test suite
+ruby '2.7.3'
 
-* Services (job queues, cache servers, search engines, etc.)
+# Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
+gem 'rails', '~> 6.1.3', '>= 6.1.3.1'
 
-* Deployment instructions
+```
 
-* ...
+```
+上記のymlコピー
+$ pbpaste > Gemfile 
+$ touch Gemfile.lock
+```
+上記後、セットアップのコマンドをやり直す
+
+## その他
+Dockerfileは日々模索中
+alpineは一旦やめた
