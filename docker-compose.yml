@@ -9,15 +9,15 @@ services:
       MYSQL_DATABASE: root
     ports:
       - "3306:3306"
-
   web:
     build: .
     command: rails s -p 3000 -b '0.0.0.0'
     volumes:
-      - ./src:/my_app
-    # srcディレクトリをコンテナにもコピー
+      - ./src:/my_app # srcディレクトリをコンテナにもコピー
+      - bundle:/usr/local/bundle # bundle install の cache
     ports:
       - "3000:3000"
     depends_on:
       - db
-
+volumes:
+  bundle:

@@ -1,0 +1,65 @@
+version: 2.1
+orbs:
+  ruby: circleci/ruby@1.1.2
+
+jobs:
+  rubocop:
+    docker:
+      - image: circleci/ruby:2.7.3
+        environment:
+          RAILS_ENV: test
+          MYSQL_HOST: "127.0.0.1"
+    working_directory: ~/my_app_1/src
+    steps:
+      - checkout:
+          path: ~/my_app_1
+      - ruby/install-deps
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop --auto-correct
+  build:
+    docker:
+      - image: circleci/ruby:2.7.3
+    working_directory: ~/my_app_1/src
+    # repo名にする
+    steps:
+      - checkout:
+          path: ~/my_app_1
+      - ruby/install-deps
+      # description: Install gems with Bundler.
+
+  test:
+    docker:
+      - image: circleci/ruby:2.7.3
+      - image: circleci/mysql:5.5
+        environment:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: my_app_test
+          MYSQL_USER: root
+    environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      APP_DATABASE_HOST: "127.0.0.1"
+      # 自分のPCを定義
+      RAILS_ENV: test
+    working_directory: ~/my_app_1/src
+    steps:
+      - checkout:
+          path: ~/my_app_1
+      - ruby/install-deps
+      - run:
+          name: Database setup
+          command: bundle exec rails db:migrate
+      - run:
+          name: test
+          command: bundle exec rspec
+
+workflows:
+  version: 2
+  build_test_rubocop:
+    jobs:
+      - rubocop
+      - build
+      - test:
+          requires:
+            - build
