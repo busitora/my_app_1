@@ -15,6 +15,10 @@ install:
 	docker-compose run web rails webpacker:install
 	docker-compose run web bundle install
 
+.PHONY: test
+test:
+	docker-compose run --rm web bundle exec rspec
+
 .PHONY: create
 creaate:
 	docker-compose run web rails db:create
