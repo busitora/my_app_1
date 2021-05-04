@@ -3,6 +3,20 @@ orbs:
   ruby: circleci/ruby@1.1.2
 
 jobs:
+  rubocop:
+    docker:
+      - image: circleci/ruby:2.7.3
+        environment:
+          RAILS_ENV: test
+          MYSQL_HOST: "127.0.0.1"
+    working_directory: ~/my_app_1/src
+    steps:
+      - checkout:
+          path: ~/my_app_1
+      - ruby/install-deps
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop --auto-correct
   build:
     docker:
       - image: circleci/ruby:2.7.3
@@ -12,7 +26,7 @@ jobs:
       - checkout:
           path: ~/my_app_1
       - ruby/install-deps
-      # bundle install とかやってくれる (orbsが)
+      # description: Install gems with Bundler.
 
   test:
     docker:
@@ -42,8 +56,9 @@ jobs:
 
 workflows:
   version: 2
-  build_test:
+  build_test_rubocop:
     jobs:
+      - rubocop
       - build
       - test:
           requires:
